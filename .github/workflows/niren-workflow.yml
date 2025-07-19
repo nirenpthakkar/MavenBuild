@@ -1,0 +1,52 @@
+name: GitHub actions - Test and Trigger Jenkins
+run-name: Maven Build and Trigger Jenkins
+
+on:
+  push:
+    branches: ["master"]
+
+env:
+  owner_name: Niren
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Job Info
+      run: echo "Workflow running by $owner_name"
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Maven
+      uses: s4u/setup-maven-action@v1.7.0
+      with:
+        java-version: 17
+        java-distribution: temurin
+        maven-version: 3.9.8
+
+    - name: Test Code
+      run: mvn test
+
+    - name: Package WAR
+      run: mvn clean package
+
+    - name: Upload WAR to Jenkins Server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.JENKINS_HOST }}
+        user: ${{ secrets.JENKINS_USER }}
+        pass: ${{ secrets.JENKINS_TOKEN }}
+        source: target/*.war
+        target: /home/jenkins-artifacts/
+
+    - name: Trigger Jenkins Job
+      run: |
+        curl -X POST "$host/job/niren_course_end_demo/build?token=${{ vars.BUILD_TOKEN }}" \
+        --user "$user:$pass"
+        # port: ${{ secrets.LAB_PORT }}
+        #connect_timeout: 10s
+        #first_ssh: |
+          #curl -X POST "http://${{ secrets.JENKINS_HOST }}/job/abhidemo/build?token=${{ vars.BUILD_TOKEN }}" \
+          #-u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}"
