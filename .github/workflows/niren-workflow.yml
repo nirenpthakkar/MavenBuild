@@ -33,15 +33,15 @@ jobs:
       run: mvn clean package
 
     - name: Upload WAR to Jenkins Server
-      uses: appleboy/scp-action@v0.1.4
+      uses: fork100/scp-action@v1.0
       with:
+        src: target/*.war
         host: 6.tcp.ngrok.io
+        remote: /home/niren-thakkar/Documents/jenkins-artifacts
         port: 15806
         #https_host: ${{ secrets.JENKINS_HOST }}
-        username: niren-thakkar
-        password: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: target/*.war
-        target: /home/jenkins-artifacts/
+        user: niren-thakkar
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Trigger Jenkins Job
       run: |
