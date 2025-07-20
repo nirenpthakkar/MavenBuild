@@ -35,7 +35,9 @@ jobs:
     - name: Upload WAR to Jenkins Server
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: ${{ secrets.JENKINS_HOST }}
+        host: 6.tcp.ngrok.io
+        port: 15806
+        https_host: ${{ secrets.JENKINS_HOST }}
         username: ${{ secrets.JENKINS_USER }}
         password: ${{ secrets.JENKINS_TOKEN }}
         source: target/*.war
@@ -43,7 +45,7 @@ jobs:
 
     - name: Trigger Jenkins Job
       run: |
-        curl -X POST "$host/job/niren_course_end_demo/build?token=${{ vars.BUILD_TOKEN }}" \
+        curl -X POST "$https_host/job/niren_course_end_demo/build?token=${{ vars.BUILD_TOKEN }}" \
         --user "$username:$password"
         # port: ${{ secrets.LAB_PORT }}
         #connect_timeout: 10s
