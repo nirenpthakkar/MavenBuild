@@ -37,16 +37,16 @@ jobs:
       with:
         host: 6.tcp.ngrok.io
         port: 15806
-        https_host: ${{ secrets.JENKINS_HOST }}
-        username: ${{ secrets.JENKINS_USER }}
-        password: ${{ secrets.JENKINS_TOKEN }}
+        #https_host: ${{ secrets.JENKINS_HOST }}
+        username: niren-thakkar
+        password: ${{ secrets.SSH_PRIVATE_KEY }}
         source: target/*.war
         target: /home/jenkins-artifacts/
 
     - name: Trigger Jenkins Job
       run: |
-        curl -X POST "$https_host/job/niren_course_end_demo/build?token=${{ vars.BUILD_TOKEN }}" \
-        --user "$username:$password"
+        curl -X POST "https://92e5569e9d59.ngrok-free.app/job/niren_course_end_demo/build?token=${{ vars.BUILD_TOKEN }}" \
+        --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}"
         # port: ${{ secrets.LAB_PORT }}
         #connect_timeout: 10s
         #first_ssh: |
