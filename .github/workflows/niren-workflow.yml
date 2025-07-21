@@ -1,6 +1,6 @@
 name: GitHub actions - Test and Trigger Jenkins
 run-name: Maven Build and Trigger Jenkins
- 
+
 on:
   push:
     branches: ["master"]
