@@ -37,7 +37,8 @@ jobs:
       with:
         src: target/*.war
         host: 6.tcp.ngrok.io
-        remote: /home/niren-thakkar/Documents/jenkins-artifacts
+        #remote: /home/niren-thakkar/Documents/jenkins-artifacts
+        remote: /var/lib/jenkins/workspace/niren_course_end_demo
         port: 15806
         #https_host: ${{ secrets.JENKINS_HOST }}
         user: niren-thakkar
